@@ -2,7 +2,6 @@
 
 # Import helper functions
 source .github/functions.sh
-
 # Week Two Exercise: Advanced Bitcoin Transaction
 # This script combines concepts from previous exercises into a comprehensive challenge
 
@@ -134,7 +133,7 @@ TX_SIZE=$((10 + 68 + 31 + 31))
 check_cmd "Transaction size calculation" "TX_SIZE" "$TX_SIZE"
 
 FEE_RATE=10  # satoshis/vbyte
-FEE_SATS=
+FEE_SATS=$((TX_SIZE * FEE_RATE))
 check_cmd "Fee calculation" "FEE_SATS" "$FEE_SATS"
 
 echo "Estimated transaction size: $TX_SIZE vbytes"
@@ -166,6 +165,7 @@ echo ""
 # WRITE YOUR SOLUTION BELOW:
 PAYMENT_ADDRESS="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 CHANGE_ADDRESS="bcrt1qg09ftw43jvlhj4wlwwhkxccjzmda3kdm4y83ht"
+RBF_SEQ_NUM=4294967293
 
 # STUDENT TASK: Create a proper input JSON for createrawtransaction
 TX_INPUTS="[{\"txid\":\"$UTXO_TXID\",\"vout\":$UTXO_VOUT_INDEX,\"sequence\":$RBF_SEQ_NUM}]"
@@ -253,7 +253,7 @@ echo ""
 echo "Creating a simple transaction for signing..."
 
 # STUDENT TASK: Create a simple transaction that sends funds to the test address
-SIMPLE_TX_INPUTS='[{"txid":"'$TXID'","vout":0,"sequence":4294967293}]'
+SIMPLE_TX_INPUTS='[{"txid":"'$TXID'","vout":0,"sequence":'$RBF_SEQ_NUM'}]'
 SIMPLE_TX_OUTPUTS='{"'$TEST_ADDRESS'":0.0001}'
 
 # Create a raw transaction for signing using the SIMPLE_TX_INPUTS and SIMPLE_TX_OUTPUTS
